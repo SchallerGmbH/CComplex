@@ -30,7 +30,7 @@ public:
 
 
     size_t printTo(Print& p) const;
-
+    size_t printToDig(Print& p, int digits) const;
 
     void polar(const float modulus, const float phase);
     float phase() const       { return atan2(im, re); };

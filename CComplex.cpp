@@ -24,6 +24,17 @@ size_t Complex::printTo(Print& p) const
 };
 
 
+size_t Complex::printToDig(Print& p, int digits) const
+{
+  size_t n = 0;
+  n += p.print(re, digits);
+  n += p.print(' ');
+  n += p.print(im, digits);
+  n += p.print('i');
+  return n;
+};
+
+
 void Complex::polar(const float modulus, const float phase)
 {
   re = modulus * cos(phase);
