@@ -9,8 +9,12 @@
 //  HISTORY: see changelog.md
 
 
+ #ifdef USECCOMPLEX
+//#include <CComplex.h>
 #include "CComplex.h"
-
+ #else
+#include <Complex.h>
+ #endif
 
 //  PRINTING
 size_t Complex::printTo(Print& p) const
@@ -23,7 +27,6 @@ size_t Complex::printTo(Print& p) const
   return n;
 };
 
-
 size_t Complex::printToDig(Print& p, int digits) const
 {
   size_t n = 0;
@@ -34,8 +37,9 @@ size_t Complex::printToDig(Print& p, int digits) const
   return n;
 };
 
+ #ifdef USECCOMPLEX
 
-void Complex::polar(const float modulus, const float phase)
+void Complex::polar(const ctype_t modulus, const ctype_t phase)
 {
   re = modulus * cos(phase);
   im = modulus * sin(phase);
@@ -44,9 +48,9 @@ void Complex::polar(const float modulus, const float phase)
 
 Complex Complex::reciprocal() const
 {
-  float f = 1.0 / (re * re + im * im);
-  float r = re * f;
-  float i = -im * f;
+  ctype_t f = 1.0 / (re * re + im * im);
+  ctype_t r = re * f;
+  ctype_t i = -im * f;
   return Complex(r, i);
 }
 
@@ -91,17 +95,17 @@ Complex Complex::operator - (const Complex &c) const
 
 Complex Complex::operator * (const Complex &c) const
 {
-  float r = re * c.re - im * c.im;
-  float i = re * c.im + im * c.re;
+  ctype_t r = re * c.re - im * c.im;
+  ctype_t i = re * c.im + im * c.re;
   return Complex(r, i);
 }
 
 
 Complex Complex::operator / (const Complex &c) const
 {
-  float f = 1.0/(c.re * c.re + c.im * c.im);
-  float r = (re * c.re + im * c.im) * f;
-  float i = (im * c.re - re * c.im) * f;
+  ctype_t f = 1.0/(c.re * c.re + c.im * c.im);
+  ctype_t r = (re * c.re + im * c.im) * f;
+  ctype_t i = (im * c.re - re * c.im) * f;
   return Complex(r, i);
 }
 
@@ -124,8 +128,8 @@ Complex& Complex::operator -= (const Complex &c)
 
 Complex& Complex::operator *= (const Complex &c)
 {
-  float r = re * c.re - im * c.im;
-  float i = re * c.im + im * c.re;
+  ctype_t r = re * c.re - im * c.im;
+  ctype_t i = re * c.im + im * c.re;
   re = r;
   im = i;
   return *this;
@@ -134,9 +138,9 @@ Complex& Complex::operator *= (const Complex &c)
 
 Complex& Complex::operator /= (const Complex &c)
 {
-  float f = 1.0/(c.re * c.re + c.im * c.im);
-  float r = (re * c.re + im * c.im) * f;
-  float i = (im * c.re - re * c.im) * f;
+  ctype_t f = 1.0/(c.re * c.re + c.im * c.im);
+  ctype_t r = (re * c.re + im * c.im) * f;
+  ctype_t i = (im * c.re - re * c.im) * f;
   re = r;
   im = i;
   return *this;
@@ -148,17 +152,17 @@ Complex& Complex::operator /= (const Complex &c)
 //
 Complex Complex::c_sqr() const
 {
-  float r = re * re - im * im;
-  float i = 2 * re * im;
+  ctype_t r = re * re - im * im;
+  ctype_t i = 2 * re * im;
   return Complex(r, i);
 }
 
 
 Complex Complex::c_sqrt() const
 {
-  float m = modulus();
-  float r = sqrt(0.5 * (m + re));
-  float i = sqrt(0.5 * (m - re));
+  ctype_t m = modulus();
+  ctype_t r = sqrt(0.5 * (m + re));
+  ctype_t i = sqrt(0.5 * (m - re));
   if (im < 0) i = -i;
   return Complex(r, i);
 }
@@ -166,15 +170,15 @@ Complex Complex::c_sqrt() const
 
 Complex Complex::c_exp() const
 {
-  float e = exp(re);
+  ctype_t e = exp(re);
   return Complex(e * cos(im), e * sin(im));
 }
 
 
 Complex Complex::c_log() const
 {
-  float m = modulus();
-  float p = phase();
+  ctype_t m = modulus();
+  ctype_t p = phase();
   if (p > PI) p -= 2 * PI;
   return Complex(log(m), p);
 }
@@ -405,6 +409,7 @@ Complex Complex::c_acoth() const
   return (one / *this).c_atanh();
 }
 
+ #endif /* #ifdef USECCOMPLEX */
 
 // --- END OF FILE ---
 

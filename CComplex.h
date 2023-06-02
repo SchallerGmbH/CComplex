@@ -11,6 +11,14 @@
 #include "Arduino.h"
 #include "Printable.h"
 
+#ifdef USECCOMPLEX_DOUBLE
+#define ctype_t double
+//typedef ctype_t double_t;
+#else
+#define ctype_t float
+//typedef ctype_t  float_t;
+#endif
+
 
 #define COMPLEX_LIB_VERSION                 (F("0.3.2"))
 
@@ -18,23 +26,23 @@
 class Complex: public Printable
 {
 public:
-    Complex(const float r = 0, const float i = 0) : re(r), im(i) {};
+    Complex(const ctype_t r = 0, const ctype_t i = 0) : re(r), im(i) {};
     Complex(const Complex &c) : re(c.re), im(c.im) {};
 
 
-    void set(const float r, const float i ) { re = r; im = i; };
-    void setReal(const float r)  { re = r; };
-    void setImag(const float i ) { im = i; };
-    float real() const { return re; };
-    float imag() const { return im; };
+    void set(const ctype_t r, const ctype_t i ) { re = r; im = i; };
+    void setReal(const ctype_t r)  { re = r; };
+    void setImag(const ctype_t i ) { im = i; };
+    ctype_t real() const { return re; };
+    ctype_t imag() const { return im; };
 
 
     size_t printTo(Print& p) const;
     size_t printToDig(Print& p, int digits) const;
 
-    void polar(const float modulus, const float phase);
-    float phase() const       { return atan2(im, re); };
-    float modulus() const     { return hypot(re, im); };
+    void polar(const ctype_t modulus, const ctype_t phase);
+    ctype_t phase() const       { return atan2(im, re); };
+    ctype_t modulus() const     { return hypot(re, im); };
     //  conjugate is the number mirrored in x-axis
     Complex conjugate() const { return Complex(re, -im); };
     Complex reciprocal() const;
@@ -100,8 +108,8 @@ public:
 
 
 protected:
-    float re;
-    float im;
+    ctype_t re;
+    ctype_t im;
 
     Complex gonioHelper1(const byte) const;
     Complex gonioHelper2(const byte) const;
