@@ -12,11 +12,11 @@
 #include "Printable.h"
 
 #ifdef USECCOMPLEX_DOUBLE
-#define ctype_t double
-//typedef ctype_t double_t;
+//#define ctype_t double
+typedef double ctype_t;
 #else
-#define ctype_t float
-//typedef ctype_t  float_t;
+//#define ctype_t float
+typedef float ctype_t;
 #endif
 
 
